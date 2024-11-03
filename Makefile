@@ -122,3 +122,16 @@ status: ## Show environment status
 	@echo "Tools: $$(ls -1 $(ANTHROPIC_DIR)/tools 2>/dev/null | wc -l) installed"
 	@echo
 	@make validate-token || true
+
+
+changelog: ## Generate CHANGELOG.org from git history
+	@echo "Generating changelog..."
+	@chmod +x scripts/generate_changelog.sh
+	@scripts/generate_changelog.sh
+	@echo "Changelog generated"
+
+changelog-commit: ## Generate and commit CHANGELOG.org
+	@echo "Generating and committing changelog..."
+	@chmod +x scripts/generate_changelog.sh
+	@scripts/generate_changelog.sh --commit
+	@echo "Changelog committed"
