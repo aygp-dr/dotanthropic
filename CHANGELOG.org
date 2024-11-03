@@ -6,6 +6,17 @@
 ** Changed
 
 *** Feat
+*** Features (build)
+- add changelog targets
+  - Add 'make changelog' for generation
+  - Add 'make changelog-commit' for automated commits
+  - Update help documentation
+*** Features (scripts)
+- add changelog generator
+  - Add automatic changelog generation from git history
+  - Parse conventional commits for categorization
+  - Generate org-mode formatted output
+  - Include detailed commit information
 *** Features (scripts)
 - add essential bootstrap scripts
   - bootstrap.sh: SSH key and GitHub setup with idempotency
@@ -25,6 +36,11 @@
   - Add shell target for nix-shell entry
 
 *** Fix
+*** Fixes (docs)
+- update repository name references
+  - Update repository URL to dotanthropic
+  - Fix documentation references
+  - Update script configurations
 *** Fixes (git)
 - correct scripts directory tracking
   - Fix scripts directory inclusion in .gitignore
@@ -32,6 +48,12 @@
   - Add explicit ignores for common patterns
 
 *** Docs
+*** Documentation (changelog)
+- add initial changelog
+  - Add version history
+  - Include categorized changes
+  - Document release information
+  - [skip ci]
 *** Documentation (readme)
 - add initial documentation
   - Add quick start instructions
@@ -48,6 +70,11 @@
   - Include troubleshooting guide
 
 *** Chore
+*** Chores (git)
+- update gitignore patterns
+  - Add CHANGELOG.org to tracked files
+  - Ensure script executables are tracked
+  - Maintain core file restrictions
 *** Chores (git)
 - configure source control
   - Ignore all files by default
