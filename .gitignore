@@ -1,7 +1,23 @@
+# Deny everything by default
 *
 .*
+
+# Allow core repository files
 !Makefile
 !README.org
 !shell.nix
-!scripts
 !.gitignore
+
+# Allow scripts directory and its contents
+!scripts/
+!scripts/**
+
+# Always ignore these even if matched above
+.git/
+.direnv/
+result
+result-*
+*.swp
+*.swo
+*~
+.DS_Store
