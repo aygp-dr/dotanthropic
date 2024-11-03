@@ -1,0 +1,148 @@
+#+TITLE: dotanthropic
+#+AUTHOR: computeruse
+#+DATE: 2024-11-03
+
+* Overview
+
+Automated Yet Guided Process (AYGP) agent environment configuration for =~/.anthropic=. This repository manages the core configuration and bootstrap process for agent operations.
+
+* Quick Start
+
+#+begin_src shell
+# Initial setup with GitHub
+export GITHUB_TOKEN="your-token"
+bash scripts/bootstrap.sh
+bash scripts/setup_github.sh
+
+# Enter Nix environment
+make nix-shell
+#+end_src
+
+* Directory Structure
+
+#+begin_src 
+~/.anthropic/
+├── scripts/           # Bootstrap and setup scripts
+│   ├── README.md     # Script documentation
+│   ├── bootstrap.sh  # Initial environment setup
+│   └── setup_github.sh # GitHub configuration
+├── Makefile          # Build automation
+├── README.org        # This file
+└── shell.nix        # Nix environment definition
+#+end_src
+
+* Environment
+
+** Core Tools
+- git
+- jq
+- curl
+- gnumake
+
+** Network Tools
+- netcat
+- openssl
+
+** Development Tools
+- emacs29-nox
+- imagemagick
+
+** AWS Tools
+- awscli2
+
+** System Tools
+- coreutils
+- gnused
+- gawk
+
+** Security Tools
+- gnupg
+- openssh
+
+* Usage
+
+** Make Targets
+#+begin_src shell
+make help              # Show available targets
+make nix-shell         # Enter development environment
+make nix-build         # Build the environment
+make nix-clean         # Clean Nix store
+make check-env         # Validate environment
+#+end_src
+
+** Environment Variables
+| Variable        | Description                  | Default               |
+|----------------+------------------------------+-----------------------|
+| GITHUB_TOKEN   | GitHub API token            | Required for setup    |
+| ANTHROPIC_HOME | Base directory              | ~/.anthropic          |
+| EDITOR         | Default editor              | emacs -nw            |
+
+** Scripts
+- =bootstrap.sh=: Initial environment setup
+  - Sets up SSH keys
+  - Configures GitHub access
+  - Idempotent operation
+
+- =setup_github.sh=: Repository configuration
+  - Sets up git remote
+  - Configures branch tracking
+
+* Development
+
+** Adding New Tools
+Add new tools to =shell.nix= under the appropriate category:
+
+#+begin_src nix
+baseTools = with pkgs; [
+  # Add new tools here
+  new-tool
+];
+#+end_src
+
+** Environment Verification
+Check environment status:
+#+begin_src shell
+make check-env
+#+end_src
+
+* Maintenance
+
+** Cleaning Up
+Clean Nix environment:
+#+begin_src shell
+make nix-clean
+#+end_src
+
+** Updating
+Update Nix environment:
+#+begin_src shell
+nix-channel --update
+make nix-build
+#+end_src
+
+* Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit using conventional commits format:
+   #+begin_src 
+   <type>(<scope>): <description>
+
+   - feat: New feature
+   - fix: Bug fix
+   - docs: Documentation
+   - style: Formatting
+   - refactor: Code restructuring
+   - test: Adding tests
+   - chore: Maintenance
+   #+end_src
+4. Push changes
+5. Open pull request
+
+* License
+
+MIT
+
+* Support
+
+File issues at: https://github.com/aygp-dr/dotanthropic/issues
