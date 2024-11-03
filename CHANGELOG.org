@@ -49,6 +49,11 @@
 
 *** Docs
 *** Documentation (changelog)
+- update changelog [skip ci]
+  - Auto-generated from git history
+  - Categorized by conventional commits
+  - Updated unreleased changes
+*** Documentation (changelog)
 - add initial changelog
   - Add version history
   - Include categorized changes
