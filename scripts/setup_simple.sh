@@ -14,7 +14,7 @@ sudo apt-get install \
     clojure default-jdk \
     guile-3.0 \
     mailutils \
-    texinfo \
+    texinfo qrencode \
     libgif-dev libjpeg-dev libpng-dev libtiff-dev \
     libxpm-dev libmagickwand-dev libgnutls28-dev \
     libgtk-3-dev librsvg2-dev libharfbuzz-dev \
@@ -35,6 +35,10 @@ sudo apt-get install fzf
 # Switch to Zsh
 # chsh -s $(which zsh)
 
+export PATH="/usr/local/bin:$PATH"
+
 # cd ~/opt/emacs-29.4/
 # ./configure --with-x-toolkit=gtk3 --with-gnutls --with-imagemagick
 # make bootstrap 
+# make
+# sudo make install
