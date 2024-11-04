@@ -15,7 +15,7 @@ let
   ]);
 in
 pkgs.mkShell {
-  name = "tools";
+  name = "dotanthropic";
   buildInputs = with pkgs; [
     # Python environment
     pythonEnv
@@ -61,9 +61,9 @@ pkgs.mkShell {
     export PATH="${pkgs.coreutils}/bin:$PATH" 
 
     # Set up environment marker with date, username, host, and path
-    export PS1="\n\[\033[1;35m\](tools)\[\033[0m\] \[\033[1;32m\]\u@\h\[\033[0m\]:\[\033[1;34m\]\w\[\033[0m\] \$ "
+    export PS1="\n\[\033[1;35m\](dotanthropic)\[\033[0m\] \[\033[1;32m\]\u@\h\[\033[0m\]:\[\033[1;34m\]\w\[\033[0m\] \$ "
     export PATH="$HOME/.anthropic/tools/bin:$PATH"
 
-    echo "🚀 Tools environment activated"
+    echo "🚀 dotanthropic environment activated"
   '';
 }

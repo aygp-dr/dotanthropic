@@ -135,3 +135,6 @@ changelog-commit: ## Generate and commit CHANGELOG.org
 	@chmod +x scripts/generate_changelog.sh
 	@scripts/generate_changelog.sh --commit
 	@echo "Changelog committed"
+
+setup-simple: ## Initial env without Nix
+	sh ./scripts/setup_simple.sh
