@@ -24,9 +24,9 @@ version_check() {
 ) | tee /tmp/tool_versions.txt
 
 # Generate QR code and save to PNG file
-mkdir -p /tmp/output  # Create the output directory if it doesn't exist
+mkdir -p /tmp/outputs  # Create the output directory if it doesn't exist
 date=$(date +%Y-%m-%d)  # Get the current date
-qrencode -o "/tmp/output/tool_versions_$date.png" < /tmp/tool_versions.txt
+qrencode -o "/tmp/outputs/tool_versions_$date.png" < /tmp/tool_versions.txt
 
 # Generate QR code of the concise list
 qrencode -t UTF8 < /tmp/tool_versions.txt
