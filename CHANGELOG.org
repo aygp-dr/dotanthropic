@@ -6,6 +6,11 @@
 ** Changed
 
 *** Feat
+*** Features (scripts)
+- Enhance tool-versions.sh to save QR code as PNG
+  This commit improves the `tool-versions.sh` script by adding the functionality to save the generated QR code as a PNG image in the `/tmp/outputs` directory.
+  The filename includes the current date in YYYY-MM-DD format (`tool_versions_YYYY-MM-DD.png`) for easy identification.
+  This enhancement allows users to easily save and share the QR code, providing a convenient way to access information about the installed development tools and their versions.
 *** Features (build)
 - add changelog targets
   - Add 'make changelog' for generation
