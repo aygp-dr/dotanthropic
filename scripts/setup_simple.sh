@@ -5,20 +5,13 @@ sudo apt-get update
 
 # Install essential packages
 sudo apt-get install \
-    git jq curl make gcc \
-    emacs imagemagick \
-    netcat openssl openssh-client \
-    awscli coreutils sed gawk bash gnupg wget \
-    zsh python3-venv python3-pip \
-    davfs2 \
-    clojure default-jdk \
-    guile-3.0 \
-    mailutils \
-    texinfo \
-    libgif-dev libjpeg-dev libpng-dev libtiff-dev \
-    libxpm-dev libmagickwand-dev libgnutls28-dev \
-    libgtk-3-dev librsvg2-dev libharfbuzz-dev \
-    libwebp-dev
+    build-essential git emacs zsh tmux \
+    coreutils curl jq netcat openssl openssh-client awscli gnupg ripgrep sed gawk wget tree \
+    python3-venv python3-pip \
+    clojure default-jdk guile-3.0 \
+    mailutils texinfo \
+    imagemagick libgif-dev libjpeg-dev libpng-dev libtiff-dev libxpm-dev libmagickwand-dev libgnutls28-dev libgtk-3-dev librsvg2-dev libharfbuzz-dev libwebp-dev \
+    davfs2 fuse kmod
 
 # Install Poetry
 pip3 install poetry
@@ -38,3 +31,4 @@ sudo apt-get install fzf
 # cd ~/opt/emacs-29.4/
 # ./configure --with-x-toolkit=gtk3 --with-gnutls --with-imagemagick
 # make bootstrap 
+ 
