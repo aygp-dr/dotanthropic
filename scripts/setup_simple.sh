@@ -6,12 +6,12 @@ sudo apt-get update
 # Install essential packages
 sudo apt-get install \
     build-essential git emacs zsh tmux \
-    coreutils curl jq netcat openssl openssh-client awscli gnupg ripgrep sed gawk wget tree \
+    coreutils curl jq netcat openssl openssh-client awscli gnupg ripgrep sed gawk wget tree bc qrencode \
     python3-venv python3-pip \
     clojure default-jdk guile-3.0 \
     mailutils texinfo \
     imagemagick libgif-dev libjpeg-dev libpng-dev libtiff-dev libxpm-dev libmagickwand-dev libgnutls28-dev libgtk-3-dev librsvg2-dev libharfbuzz-dev libwebp-dev \
-    davfs2 fuse kmod
+    fuse kmod davfs2 
 
 # Install Poetry
 pip3 install poetry
@@ -28,7 +28,8 @@ sudo apt-get install fzf
 # Switch to Zsh
 # chsh -s $(which zsh)
 
+export PATH="/usr/local/bin:$PATH"
+
 # cd ~/opt/emacs-29.4/
 # ./configure --with-x-toolkit=gtk3 --with-gnutls --with-imagemagick
-# make bootstrap 
- 
+# make bootstrap
