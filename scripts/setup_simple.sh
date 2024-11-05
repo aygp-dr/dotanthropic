@@ -6,6 +6,7 @@ sudo apt-get update
 # Install essential packages
 sudo apt-get install \
     git jq curl make gcc \
+    bc \ 
     emacs imagemagick \
     netcat openssl openssh-client \
     awscli coreutils sed gawk bash gnupg wget \
