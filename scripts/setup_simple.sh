@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # Update package lists
 sudo apt-get update
 
@@ -26,11 +25,11 @@ sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.
 # Install fzf
 sudo apt-get install fzf
 
+# Install Babashka
+curl -sLO https://raw.githubusercontent.com/babashka/babashka/master/install
+chmod +x install
+sudo ./install
+
 # Switch to Zsh
 # chsh -s $(which zsh)
-
 export PATH="/usr/local/bin:$PATH"
-
-# cd ~/opt/emacs-29.4/
-# ./configure --with-x-toolkit=gtk3 --with-gnutls --with-imagemagick
-# make bootstrap
