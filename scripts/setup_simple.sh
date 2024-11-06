@@ -9,6 +9,7 @@ sudo apt-get install \
     coreutils curl jq netcat openssl openssh-client awscli gnupg ripgrep sed gawk wget tree bc qrencode \
     python3-venv python3-pip \
     clojure default-jdk guile-3.0 \
+    sbcl cl-quicklisp \
     mailutils texinfo \
     imagemagick libgif-dev libjpeg-dev libpng-dev libtiff-dev libxpm-dev libmagickwand-dev libgnutls28-dev libgtk-3-dev librsvg2-dev libharfbuzz-dev libwebp-dev \
     fuse kmod davfs2 
