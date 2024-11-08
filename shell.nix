@@ -30,6 +30,7 @@ pkgs.mkShell {
     # Editors and Development tools
     emacs
     imagemagick
+    pdftops
 
     # Network tools
     netcat
@@ -44,6 +45,8 @@ pkgs.mkShell {
     gnused
     gawk
     bash
+    bash-completion
+    direnv
 
     # Security tools
     gnupg
@@ -60,9 +63,16 @@ pkgs.mkShell {
     # Prioritize BSD wrappers and coreutils in PATH
     export PATH="${pkgs.coreutils}/bin:$PATH" 
 
+    source ${pkgs.bash-completion}/etc/profile.d/bash_completion.sh
+
+    eval "$(direnv hook bash)"
+
     # Set up environment marker with date, username, host, and path
     export PS1="\n\[\033[1;35m\](dotanthropic)\[\033[0m\] \[\033[1;32m\]\u@\h\[\033[0m\]:\[\033[1;34m\]\w\[\033[0m\] \$ "
     export PATH="$HOME/.anthropic/tools/bin:$PATH"
+
+    export PATH="$(brew --prefix)/bin:$PATH"
+    export PATH="/usr/local/bin:$PATH" 
 
     echo "🚀 dotanthropic environment activated"
   '';
