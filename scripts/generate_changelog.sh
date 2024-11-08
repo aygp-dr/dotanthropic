@@ -1,5 +1,5 @@
 #!/bin/bash
-# Script to generate CHANGELOG.org from git commits
+# Enhanced changelog generation script with better organization
 
 set -euo pipefail
 
@@ -8,35 +8,112 @@ generate_header() {
 #+TITLE: Changelog
 #+DATE: $(date +%Y-%m-%d)
 * [Unreleased]
+** Changed
+
 EOF
 }
+
+# Primary change types in order of importance
+TYPES=(
+    "Features"
+    "Refactor"
+    "Documentation"
+    "Fixes"
+    "Chores"
+    "Build"
+)
+
+# Common feature scopes that deserve subsections
+FEATURE_SCOPES=(
+    "dev-env"
+    "setup"
+    "build"
+    "scripts"
+    "env"
+)
 
 parse_commit() {
     local msg="$1"
     local type scope description
     
-    # Extract parts using sed
-    type=$(echo "$msg" | sed -n 's/^\([a-z]*\)(\([^)]*\)): .*/\1/p')
-    scope=$(echo "$msg" | sed -n 's/^\([a-z]*\)(\([^)]*\)): .*/\2/p')
-    description=$(echo "$msg" | sed -n 's/^\([a-z]*\)(\([^)]*\)): \(.*\)/\3/p')
+    # Extract parts using sed, handling both feat(scope) and feat: formats
+    if echo "$msg" | grep -q "^[a-z]\+([^)]\+):"; then
+        # Format: type(scope): description
+        type=$(echo "$msg" | sed -n 's/^\([a-z]*\)(\([^)]*\)): .*/\1/p')
+        scope=$(echo "$msg" | sed -n 's/^\([a-z]*\)(\([^)]*\)): .*/\2/p')
+        description=$(echo "$msg" | sed -n 's/^\([a-z]*\)(\([^)]*\)): \(.*\)/\3/p')
+    else
+        # Format: type: description
+        type=$(echo "$msg" | sed -n 's/^\([a-z]*\): .*/\1/p')
+        scope="general"
+        description=$(echo "$msg" | sed -n 's/^\([a-z]*\): \(.*\)/\2/p')
+    fi
     
     # Default values if parsing fails
     type=${type:-other}
     scope=${scope:-general}
     description=${description:-$msg}
     
+    # Normalize type names
     case "$type" in
-        feat)     echo "*** Features ($scope)" ;;
-        fix)      echo "*** Fixes ($scope)" ;;
-        docs)     echo "*** Documentation ($scope)" ;;
-        style)    echo "*** Style ($scope)" ;;
-        refactor) echo "*** Refactor ($scope)" ;;
-        test)     echo "*** Tests ($scope)" ;;
-        chore)    echo "*** Chores ($scope)" ;;
-        *)        echo "*** Other ($scope)" ;;
+        feat|feature)     echo "Features|$scope|$description" ;;
+        fix)             echo "Fixes|$scope|$description" ;;
+        docs)            echo "Documentation|$scope|$description" ;;
+        style)           echo "Style|$scope|$description" ;;
+        refactor)        echo "Refactor|$scope|$description" ;;
+        test)            echo "Tests|$scope|$description" ;;
+        chore)           echo "Chores|$scope|$description" ;;
+        build)           echo "Build|$scope|$description" ;;
+        *)               echo "Other|$scope|$description" ;;
     esac
+}
+
+generate_feature_section() {
+    local commits="$1"
+    local printed_header=false
     
-    echo "- $description"
+    for scope in "${FEATURE_SCOPES[@]}"; do
+        local scope_commits=$(echo "$commits" | grep "Features|$scope|" || true)
+        if [ -n "$scope_commits" ]; then
+            if [ "$printed_header" = false ]; then
+                echo "*** Features"
+                printed_header=true
+            fi
+            # Convert scope to title case
+            scope_title=$(echo "$scope" | sed 's/-/ /g' | awk '{for(i=1;i<=NF;i++)sub(/./,toupper(substr($i,1,1)),$i)}1')
+            echo "**** $scope_title"
+            echo "$scope_commits" | cut -d'|' -f3 | sed 's/^/- /'
+            echo
+        fi
+    done
+    
+    # Handle any remaining features
+    local other_commits=$(echo "$commits" | grep "Features|" | grep -v -E "Features|($(IFS=\|; echo "${FEATURE_SCOPES[*]}"))|" || true)
+    if [ -n "$other_commits" ]; then
+        if [ "$printed_header" = false ]; then
+            echo "*** Features"
+        fi
+        echo "$other_commits" | cut -d'|' -f3 | sed 's/^/- /'
+        echo
+    fi
+}
+
+generate_section() {
+    local type="$1"
+    local commits="$2"
+    
+    local section_commits=$(echo "$commits" | grep "^$type|" || true)
+    if [ -n "$section_commits" ]; then
+        echo "*** $type"
+        while IFS='|' read -r _ scope description; do
+            if [ "$scope" != "general" ]; then
+                echo "- $description ($scope)"
+            else
+                echo "- $description"
+            fi
+        done <<< "$section_commits"
+        echo
+    fi
 }
 
 generate_changelog() {
@@ -48,8 +125,6 @@ generate_changelog() {
     # Generate header
     generate_header
     
-    echo -e "\n** Changed\n"
-    
     # Get range of commits
     if [ -n "$last_tag" ]; then
         range="$last_tag..HEAD"
@@ -57,14 +132,27 @@ generate_changelog() {
         range="HEAD"
     fi
     
-    # Process commits
-    git log --format="%s" $range | while read -r commit_msg; do
-        parse_commit "$commit_msg"
+    # Process all commits and store the formatted output
+    local all_commits=$(git log --format="%s" $range | while read -r commit_msg; do
+        # Skip merge commits
+        if [[ $commit_msg != Merge* ]]; then
+            parse_commit "$commit_msg"
+        fi
+    done)
+    
+    # Generate Features section with subsections
+    generate_feature_section "$all_commits"
+    
+    # Generate other sections
+    for type in "${TYPES[@]}"; do
+        if [ "$type" != "Features" ]; then
+            generate_section "$type" "$all_commits"
+        fi
     done
     
     # Add previous releases if they exist
     if [ -n "$last_tag" ]; then
-        echo -e "\n* Previous Releases\n"
+        echo "* Previous Releases"
         git tag -l --sort=-v:refname | while read -r tag; do
             local tag_date
             tag_date=$(git log -1 --format=%ai "$tag" | cut -d' ' -f1)
