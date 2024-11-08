@@ -1,62 +1,47 @@
 #+TITLE: Changelog
 #+DATE: 2024-11-08
 * [Unreleased]
-
 ** Changed
 
-*** Refactor (changelog)
-- simplify script and improve error handling
-*** Features (dev-env)
+*** Features
+**** Dev Env
 - enhance nix shell with modern tools and configurations
-*** Other (general)
-- build: update changelog generation and dev dependencies [skip ci]
-*** Features (setup)
+
+**** Setup
 - enhance Poetry setup script with comprehensive AI dev tools
-*** Other (general)
-- feat: add Poetry setup script and enhance shell environment
-*** Other (general)
-- feat: add babashka installation to setup script
-*** Features (setup)
 - add Common Lisp development tools
-*** Other (general)
-- Merge branch 'main' of github.com:jwalsh/dotanthropic
-*** Other (general)
-- feat: Improve and streamline simple setup script
-*** Other (general)
-- Resolve dependency on generating tokens
-*** Documentation (changelog)
-- Add entry for tool-versions.sh enhancement [skip ci]
-*** Features (scripts)
-- Enhance tool-versions.sh to save QR code as PNG
-*** Other (general)
-- Version all tool setup
-*** Other (general)
-- feat: Enhance setup script for comprehensive dev environment
-*** Other (general)
-- feat: Enhance Nix shell for development
-*** Documentation (changelog)
-- update changelog [skip ci]
-*** Fixes (docs)
-- update repository name references
-*** Documentation (changelog)
-- add initial changelog
-*** Chores (git)
-- update gitignore patterns
-*** Features (build)
+
+**** Build
 - add changelog targets
-*** Features (scripts)
-- add changelog generator
-*** Refactor (docs)
-- convert scripts README to org format
-*** Features (scripts)
-- add essential bootstrap scripts
-*** Fixes (git)
-- correct scripts directory tracking
-*** Chores (git)
-- configure source control
-*** Documentation (readme)
-- add initial documentation
-*** Features (env)
-- add nix shell configuration
-*** Features (build)
 - add basic makefile
+
+**** Scripts
+- Enhance tool-versions.sh to save QR code as PNG
+- add changelog generator
+- add essential bootstrap scripts
+
+**** Env
+- add nix shell configuration
+
+*** Refactor
+- improve organization and formatting (changelog)
+- simplify script and improve error handling (changelog)
+- convert scripts README to org format (docs)
+
+*** Documentation
+- Add entry for tool-versions.sh enhancement [skip ci] (changelog)
+- update changelog [skip ci] (changelog)
+- add initial changelog (changelog)
+- add initial documentation (readme)
+
+*** Fixes
+- update repository name references (docs)
+- correct scripts directory tracking (git)
+
+*** Chores
+- update gitignore patterns (git)
+- configure source control (git)
+
+*** Build
+- update changelog generation and dev dependencies [skip ci]
+
