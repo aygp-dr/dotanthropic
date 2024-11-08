@@ -1,111 +1,96 @@
 #!/bin/bash
-
 # Script to generate CHANGELOG.org from git commits
-# Uses conventional commits format to categorize changes
+
+set -euo pipefail
 
 generate_header() {
-    cat << 'EOL'
+    cat << EOF
 #+TITLE: Changelog
 #+DATE: $(date +%Y-%m-%d)
-
 * [Unreleased]
-EOL
+EOF
 }
 
-parse_conventional_commit() {
+parse_commit() {
     local msg="$1"
-    local type=$(echo "$msg" | sed -n 's/^\([a-z]*\)(\([^)]*\)): \(.*\)/\1/p')
-    local scope=$(echo "$msg" | sed -n 's/^\([a-z]*\)(\([^)]*\)): \(.*\)/\2/p')
-    local description=$(echo "$msg" | sed -n 's/^\([a-z]*\)(\([^)]*\)): \(.*\)/\3/p')
+    local type scope description
+    
+    # Extract parts using sed
+    type=$(echo "$msg" | sed -n 's/^\([a-z]*\)(\([^)]*\)): .*/\1/p')
+    scope=$(echo "$msg" | sed -n 's/^\([a-z]*\)(\([^)]*\)): .*/\2/p')
+    description=$(echo "$msg" | sed -n 's/^\([a-z]*\)(\([^)]*\)): \(.*\)/\3/p')
+    
+    # Default values if parsing fails
+    type=${type:-other}
+    scope=${scope:-general}
+    description=${description:-$msg}
     
     case "$type" in
-        feat)     echo "*** Features ($scope)"     ;;
-        fix)      echo "*** Fixes ($scope)"        ;;
+        feat)     echo "*** Features ($scope)" ;;
+        fix)      echo "*** Fixes ($scope)" ;;
         docs)     echo "*** Documentation ($scope)" ;;
-        style)    echo "*** Style ($scope)"        ;;
-        refactor) echo "*** Refactor ($scope)"     ;;
-        test)     echo "*** Tests ($scope)"        ;;
-        chore)    echo "*** Chores ($scope)"       ;;
-        *)        echo "*** Other ($scope)"        ;;
+        style)    echo "*** Style ($scope)" ;;
+        refactor) echo "*** Refactor ($scope)" ;;
+        test)     echo "*** Tests ($scope)" ;;
+        chore)    echo "*** Chores ($scope)" ;;
+        *)        echo "*** Other ($scope)" ;;
     esac
     
-    echo "$description" | sed 's/^/- /'
-    
-    # Get the body of the commit if it exists
-    git log -1 --format="%b" "$commit" | grep -v '^$' | sed 's/^/  /'
+    echo "- $description"
 }
 
 generate_changelog() {
-    local last_tag=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
-    local current_date=$(date +%Y-%m-%d)
+    local last_tag current_date range
+    
+    last_tag=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+    current_date=$(date +%Y-%m-%d)
     
     # Generate header
     generate_header
     
     echo -e "\n** Changed\n"
     
-    # Get all commits since last tag (or all if no tags)
+    # Get range of commits
     if [ -n "$last_tag" ]; then
         range="$last_tag..HEAD"
     else
         range="HEAD"
     fi
     
-    # Group commits by type
-    local commits=$(git log --format="%H" $range)
-    declare -A grouped_commits
-    
-    for commit in $commits; do
-        local msg=$(git log -1 --format="%s" "$commit")
-        local group=$(echo "$msg" | sed -n 's/^\([a-z]*\)(\([^)]*\)): .*/\1/p')
-        [ -n "$group" ] && grouped_commits["$group"]+="$commit "
+    # Process commits
+    git log --format="%s" $range | while read -r commit_msg; do
+        parse_commit "$commit_msg"
     done
     
-    # Output each group
-    for type in feat fix docs style refactor test chore; do
-        if [ -n "${grouped_commits[$type]}" ]; then
-            echo "*** ${type^}"
-            for commit in ${grouped_commits[$type]}; do
-                local msg=$(git log -1 --format="%s" "$commit")
-                parse_conventional_commit "$msg"
-            done
-            echo
-        fi
-    done
-    
-    # Previous releases
+    # Add previous releases if they exist
     if [ -n "$last_tag" ]; then
         echo -e "\n* Previous Releases\n"
         git tag -l --sort=-v:refname | while read -r tag; do
-            local tag_date=$(git log -1 --format=%ai "$tag" | cut -d' ' -f1)
+            local tag_date
+            tag_date=$(git log -1 --format=%ai "$tag" | cut -d' ' -f1)
             echo "** [$tag] - $tag_date"
-            if [ -n "$prev_tag" ]; then
-                range="$tag..$prev_tag"
-            else
-                range="$tag"
-            fi
-            git log --format="- %s%n%b" "$range" | sed '/^$/d'
+            git log --format="- %s" "$tag" -n 1
             echo
-            prev_tag=$tag
         done
     fi
 }
 
-# Main execution
-{
-    generate_changelog > CHANGELOG.org
+main() {
+    if ! generate_changelog > CHANGELOG.org; then
+        echo "Error generating changelog"
+        exit 1
+    fi
+    
     echo "Changelog generated at CHANGELOG.org"
-} || {
-    echo "Error generating changelog"
-    exit 1
+    
+    # Commit if requested
+    if [ "${1:-}" = "--commit-message" ]; then
+        shift
+        message=${1:-"docs(changelog): update changelog [skip ci]"}
+        git add CHANGELOG.org
+        git commit -m "$message"
+        echo "Changelog committed with message: $message"
+    fi
 }
 
-# Add to git if requested
-if [ "$1" = "--commit" ]; then
-    git add CHANGELOG.org
-    git commit -m "docs(changelog): update changelog [skip ci]
-
-- Auto-generated from git history
-- Categorized by conventional commits
-- Updated unreleased changes"
-fi
+main "$@"
