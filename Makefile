@@ -123,18 +123,17 @@ status: ## Show environment status
 	@echo
 	@make validate-token || true
 
-
 changelog: ## Generate CHANGELOG.org from git history
 	@echo "Generating changelog..."
 	@chmod +x scripts/generate_changelog.sh
 	@scripts/generate_changelog.sh
 	@echo "Changelog generated"
 
-changelog-commit: ## Generate and commit CHANGELOG.org
+changelog-commit: ## Generate and commit CHANGELOG.org with [skip ci]
 	@echo "Generating and committing changelog..."
 	@chmod +x scripts/generate_changelog.sh
-	@scripts/generate_changelog.sh --commit
-	@echo "Changelog committed"
+	@scripts/generate_changelog.sh --commit-message "[skip ci] Update CHANGELOG.org"
+	@echo "Changelog committed with CI skip flag"
 
 setup-simple: ## Initial env without Nix
 	sh ./scripts/setup_simple.sh

@@ -30,7 +30,13 @@ pkgs.mkShell {
     # Editors and Development tools
     emacs
     imagemagick
-    pdftops
+    clojure
+    gnumake
+    git
+    ghostscript
+    imagemagick
+    qrencode
+    gh
 
     # Network tools
     netcat
