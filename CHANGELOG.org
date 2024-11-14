@@ -1,83 +1,47 @@
 #+TITLE: Changelog
-#+DATE: $(date +%Y-%m-%d)
-
+#+DATE: 2024-11-08
 * [Unreleased]
-
 ** Changed
 
-*** Feat
-*** Features (build)
+*** Features
+**** Dev Env
+- enhance nix shell with modern tools and configurations
+
+**** Setup
+- enhance Poetry setup script with comprehensive AI dev tools
+- add Common Lisp development tools
+
+**** Build
 - add changelog targets
-  - Add 'make changelog' for generation
-  - Add 'make changelog-commit' for automated commits
-  - Update help documentation
-*** Features (scripts)
-- add changelog generator
-  - Add automatic changelog generation from git history
-  - Parse conventional commits for categorization
-  - Generate org-mode formatted output
-  - Include detailed commit information
-*** Features (scripts)
-- add essential bootstrap scripts
-  - bootstrap.sh: SSH key and GitHub setup with idempotency
-  - setup_github.sh: Repository remote configuration
-  - README.md: Script documentation and usage
-*** Features (env)
-- add nix shell configuration
-  - Add core development tools
-  - Add network utilities
-  - Add AWS tools
-  - Configure shell environment
-  - Set up PATH and environment variables
-*** Features (build)
 - add basic makefile
-  - Add help target with documentation
-  - Add setup target for environment initialization
-  - Add shell target for nix-shell entry
 
-*** Fix
-*** Fixes (docs)
-- update repository name references
-  - Update repository URL to dotanthropic
-  - Fix documentation references
-  - Update script configurations
-*** Fixes (git)
-- correct scripts directory tracking
-  - Fix scripts directory inclusion in .gitignore
-  - Ensure all script contents are tracked
-  - Add explicit ignores for common patterns
+**** Scripts
+- Enhance tool-versions.sh to save QR code as PNG
+- add changelog generator
+- add essential bootstrap scripts
 
-*** Docs
-*** Documentation (changelog)
-- add initial changelog
-  - Add version history
-  - Include categorized changes
-  - Document release information
-  - [skip ci]
-*** Documentation (readme)
-- add initial documentation
-  - Add quick start instructions
-  - Document directory structure
-  - List included tools
-  - Provide usage examples
+**** Env
+- add nix shell configuration
 
 *** Refactor
-*** Refactor (docs)
-- convert scripts README to org format
-  - Rename README.md to README.org
-  - Enhance script documentation
-  - Add comprehensive usage examples
-  - Include troubleshooting guide
+- improve organization and formatting (changelog)
+- simplify script and improve error handling (changelog)
+- convert scripts README to org format (docs)
 
-*** Chore
-*** Chores (git)
-- update gitignore patterns
-  - Add CHANGELOG.org to tracked files
-  - Ensure script executables are tracked
-  - Maintain core file restrictions
-*** Chores (git)
-- configure source control
-  - Ignore all files by default
-  - Track only Makefile, README.org, and shell.nix
-  - Explicitly ignore temporary and system files
+*** Documentation
+- Add entry for tool-versions.sh enhancement [skip ci] (changelog)
+- update changelog [skip ci] (changelog)
+- add initial changelog (changelog)
+- add initial documentation (readme)
+
+*** Fixes
+- update repository name references (docs)
+- correct scripts directory tracking (git)
+
+*** Chores
+- update gitignore patterns (git)
+- configure source control (git)
+
+*** Build
+- update changelog generation and dev dependencies [skip ci]
 
