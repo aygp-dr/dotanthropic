@@ -6,6 +6,22 @@
 
 This guide explains how to securely share files between team members using GPG encryption.
 
+** Computer Use Container Setup
+Before starting the Computer Use container, make sure you have the prerequisites:
+
+#+begin_src shell
+# Check Docker installation and port availability
+gmake check-docker
+
+# Start the container with default settings (port 8000)
+ANTHROPIC_KEY=your_key GITHUB_TOKEN=your_token gmake run-container
+
+# Start on a different port if 8000 is in use
+HOST_PORT=9000 ANTHROPIC_KEY=your_key GITHUB_TOKEN=your_token gmake run-container
+#+end_src
+
+After successful startup, access Computer Use at http://localhost:8000 (or your custom port).
+
 ** Setup
 
 *** Method 1: Using the Makefile (if you have the repository)

@@ -25,8 +25,14 @@ gmake setup
 gmake bootstrap
 gmake nix-shell
 
-# Run Computer Use container
+# Check Docker prerequisites
+gmake check-docker
+
+# Run Computer Use container (default port 8000)
 ANTHROPIC_KEY=your_key GITHUB_TOKEN=your_token gmake run-container
+
+# Run on a different port
+HOST_PORT=9000 ANTHROPIC_KEY=your_key GITHUB_TOKEN=your_token gmake run-container
 #+end_src
 
 ** Secure File Sharing

@@ -1,4 +1,4 @@
-.PHONY: help bootstrap setup nix-shell nix-build nix-clean check-env install-nix github-setup git-config validate-token clean lint configure make-detect run-container setup-ssh setup-gpg import-keys import-keys-simple
+.PHONY: help bootstrap setup nix-shell nix-build nix-clean check-env install-nix github-setup git-config validate-token clean lint configure make-detect run-container setup-ssh setup-gpg import-keys import-keys-simple check-docker
 
 # Use single variable for make command
 MAKE_CMD := gmake
@@ -161,13 +161,17 @@ changelog-commit: ## Generate and commit CHANGELOG.org with [skip ci]
 setup-simple: ## Initial env without Nix
 	sh ./scripts/setup_simple.sh
 	
-run-container: ## Run Computer Use Docker container
+check-docker: ## Check Docker installation and port availability
+	@echo "Checking Docker prerequisites..."
+	@bash ./scripts/check_docker.sh "$(HOST_PORT)"
+
+run-container: check-docker ## Run Computer Use Docker container
 	@if [ -z "$(ANTHROPIC_KEY)" ] || [ -z "$(GITHUB_TOKEN)" ]; then \
 		echo "Both ANTHROPIC_KEY and GITHUB_TOKEN must be set"; \
 		exit 1; \
 	fi
 	@echo "Starting Anthropic Computer Use container..."
-	@bash ./scripts/run.sh
+	@HOST_PORT=$(HOST_PORT) bash ./scripts/run.sh
 	
 # =================== Linting ===================
 

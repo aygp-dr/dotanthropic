@@ -10,7 +10,9 @@
 - Generate changelog: `gmake changelog`
 - Generate and commit changelog: `gmake changelog-commit`
 - Lint code: `gmake lint`
+- Check Docker setup: `gmake check-docker`
 - Run Computer Use container: `ANTHROPIC_KEY=your_key GITHUB_TOKEN=your_token gmake run-container`
+- Run on custom port: `HOST_PORT=9000 ANTHROPIC_KEY=your_key GITHUB_TOKEN=your_token gmake run-container`
 - SSH key setup: `gmake setup-ssh`
 - GPG key setup: `gmake setup-gpg`
 - Import collaborator keys: `gmake import-keys`

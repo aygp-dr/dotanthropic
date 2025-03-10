@@ -9,7 +9,7 @@ IMAGE_NAME="anthropics/computer-use-quickstart"
 TAG="latest"
 CONTAINER_NAME="anthropic-computer-use"
 CONTAINER_PORT=8000
-HOST_PORT=8000
+HOST_PORT="${HOST_PORT:-8000}"
 
 # Usage information
 usage() {
