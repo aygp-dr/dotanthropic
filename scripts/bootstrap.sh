@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 generate_key_title() {
     local timestamp=$(date +%Y%m%d_%H%M%S)

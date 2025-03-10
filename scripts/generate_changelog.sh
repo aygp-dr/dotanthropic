@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Enhanced changelog generation script with better organization
 
 set -euo pipefail

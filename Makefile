@@ -1,6 +1,9 @@
-.PHONY: help bootstrap setup nix-shell nix-build nix-clean check-env install-nix github-setup git-config validate-token clean
+.PHONY: help bootstrap setup nix-shell nix-build nix-clean check-env install-nix github-setup git-config validate-token clean lint configure make-detect run-container
 
-SHELL := /bin/bash
+# Use single variable for make command
+MAKE_CMD := gmake
+
+SHELL := /usr/bin/env bash
 ANTHROPIC_DIR := $(HOME)/.anthropic
 DATE := $(shell date +%Y-%m-%d)
 TIME := $(shell date +%H-%M-%S)
@@ -12,7 +15,7 @@ help: ## Show this help message
 	@echo 'Usage: make [target]'
 	@echo
 	@echo 'Targets:'
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+	@grep -E '^[a-zA-Z_-]+:.*## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 # =================== Installation ===================
 
@@ -137,3 +140,33 @@ changelog-commit: ## Generate and commit CHANGELOG.org with [skip ci]
 
 setup-simple: ## Initial env without Nix
 	sh ./scripts/setup_simple.sh
+	
+run-container: ## Run Computer Use Docker container
+	@if [ -z "$(ANTHROPIC_KEY)" ] || [ -z "$(GITHUB_TOKEN)" ]; then \
+		echo "Both ANTHROPIC_KEY and GITHUB_TOKEN must be set"; \
+		exit 1; \
+	fi
+	@echo "Starting Anthropic Computer Use container..."
+	@bash ./scripts/run.sh
+	
+# =================== Linting ===================
+
+lint: ## Lint shell scripts and other code
+	@echo "Linting shell scripts with shellcheck..."
+	@find scripts -type f -name "*.sh" -exec shellcheck {} \;
+	@echo "Linting Python code..."
+	@if command -v ruff >/dev/null 2>&1; then \
+		find . -type f -name "*.py" -exec ruff check {} \; ; \
+	else \
+		echo "ruff not installed. Use nix-shell or install with pip"; \
+	fi
+	@echo "Linting Makefiles..."
+	@$(MAKE_CMD) --dry-run --warn-undefined-variables --print-directory
+	@echo "Lint complete"
+	
+make-detect: ## Shows detected make command
+	@echo "Detected make command: $(MAKE_CMD)"
+	@$(MAKE_CMD) --version | head -n 1
+	
+configure: ## Configure environment and detect make
+	@bash scripts/configure.sh
