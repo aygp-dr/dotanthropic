@@ -104,6 +104,10 @@ import-keys: ## Import collaborator GPG keys for encryption
 	@echo "Importing collaborator GPG keys..."
 	@bash scripts/import_keys.sh
 
+cleanup-keys: ## Import keys and cleanup system-specific keys
+	@echo "Importing keys and suggesting cleanup..."
+	@bash scripts/import_keys.sh --cleanup
+
 github-setup: validate-token setup-ssh setup-gpg ## Setup GitHub repository with SSH and GPG keys
 	@echo "Setting up GitHub configuration..."
 	@bash scripts/setup_github.sh
