@@ -20,6 +20,11 @@
 
 ## Code Style Guidelines
 
+### Git Configuration
+- Default identity: `Aidan Pace <computeruse@defrecord.com>`
+- Use dedicated SSH keys: Run `gmake setup-ssh` to configure
+- Remote format: `git@github.com-aygp-dr:aygp-dr/REPO.git`
+
 ### Commit Format
 - Follow conventional commits: `<type>(<scope>): <description>`
 - Types: feat, fix, docs, style, refactor, test, chore

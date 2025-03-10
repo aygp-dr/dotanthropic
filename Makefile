@@ -1,4 +1,4 @@
-.PHONY: help bootstrap setup nix-shell nix-build nix-clean check-env install-nix github-setup git-config validate-token clean lint configure make-detect run-container
+.PHONY: help bootstrap setup nix-shell nix-build nix-clean check-env install-nix github-setup git-config validate-token clean lint configure make-detect run-container setup-ssh
 
 # Use single variable for make command
 MAKE_CMD := gmake
@@ -71,7 +71,7 @@ nix-clean: ## Clean Nix store and environment
 git-config: ## Configure git user identity
 	@echo "Setting up git user configuration..."
 	@git config --global user.email "computeruse@defrecord.com"
-	@git config --global user.name "computeruse"
+	@git config --global user.name "Aidan Pace"
 	@git config --global init.defaultBranch main
 	@echo "Git identity configured:"
 	@git config --get user.name
@@ -92,7 +92,11 @@ validate-token: ## Validate GitHub token
 		curl -s -H "Authorization: token $$GITHUB_TOKEN" https://api.github.com/user | jq -r '.login // "Token invalid"'; \
 	fi
 
-github-setup: validate-token ## Setup GitHub repository and SSH key
+setup-ssh: ## Configure SSH keys for GitHub
+	@echo "Setting up SSH keys for GitHub..."
+	@bash scripts/setup_ssh.sh
+
+github-setup: validate-token setup-ssh ## Setup GitHub repository and SSH key
 	@echo "Setting up GitHub configuration..."
 	@bash scripts/setup_github.sh
 
