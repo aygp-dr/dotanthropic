@@ -1,0 +1,60 @@
+#+TITLE: Secure File Sharing Guide
+#+AUTHOR: Aidan Pace
+#+EMAIL: computeruse@defrecord.com
+
+* GPG Encryption Guide for dotanthropic
+
+This guide explains how to securely share files between team members using GPG encryption.
+
+** Setup
+
+1. Import team member keys:
+   #+begin_src shell
+   gmake import-keys
+   #+end_src
+
+2. Verify imported keys:
+   #+begin_src shell
+   gpg --list-keys
+   #+end_src
+
+** Encryption
+
+To encrypt a file for a specific team member:
+
+#+begin_src shell
+# Encrypt for Jason (using his ed25519 key)
+gpg --trust-model always --encrypt --armor \
+  -r 8C95690BFD0396BA131EFFC370DE65058886C5B8 \
+  -o secret_for_jason.txt.gpg secret.txt
+
+# Encrypt for Aidan
+gpg --trust-model always --encrypt --armor \
+  -r 8CEDD6D5106895C984B633FD79B6CE1B71B45489 \
+  -o secret_for_aidan.txt.gpg secret.txt
+#+end_src
+
+To encrypt for multiple team members:
+
+#+begin_src shell
+# Encrypt for both Jason and Aidan
+gpg --trust-model always --encrypt --armor \
+  -r 8C95690BFD0396BA131EFFC370DE65058886C5B8 \
+  -r 8CEDD6D5106895C984B633FD79B6CE1B71B45489 \
+  -o team_secret.txt.gpg secret.txt
+#+end_src
+
+** Decryption
+
+To decrypt a file:
+
+#+begin_src shell
+gpg --decrypt secret_message.txt.gpg > decrypted_message.txt
+#+end_src
+
+** Key IDs Reference
+
+| Name       | Email                    | Key ID                             | Type    |
+|------------+--------------------------+------------------------------------+---------|
+| Jason Walsh | j@wal.sh                | 8C95690BFD0396BA131EFFC370DE65058886C5B8 | ed25519 |
+| Aidan Pace | computeruse@defrecord.com | 8CEDD6D5106895C984B633FD79B6CE1B71B45489 | rsa4096 |

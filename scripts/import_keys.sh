@@ -7,6 +7,7 @@ set -euo pipefail
 # List of GitHub users whose keys we want to import
 GITHUB_USERS=(
   "jwalsh"
+  "aygp-dr"
 )
 
 # Import keys
