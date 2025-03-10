@@ -1,4 +1,4 @@
-.PHONY: help bootstrap setup nix-shell nix-build nix-clean check-env install-nix github-setup git-config validate-token clean lint configure make-detect run-container setup-ssh setup-gpg import-keys
+.PHONY: help bootstrap setup nix-shell nix-build nix-clean check-env install-nix github-setup git-config validate-token clean lint configure make-detect run-container setup-ssh setup-gpg import-keys import-keys-simple
 
 # Use single variable for make command
 MAKE_CMD := gmake
@@ -103,6 +103,10 @@ setup-gpg: ## Configure GPG key for commit signing
 import-keys: ## Import collaborator GPG keys for encryption
 	@echo "Importing collaborator GPG keys..."
 	@bash scripts/import_keys.sh
+
+import-keys-simple: ## Import keys using wget (no GitHub CLI needed)
+	@echo "Importing collaborator GPG keys with wget..."
+	@bash scripts/simple_key_import.sh
 
 cleanup-keys: ## Import keys and cleanup system-specific keys
 	@echo "Importing keys and suggesting cleanup..."

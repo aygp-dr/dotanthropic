@@ -8,15 +8,59 @@ This guide explains how to securely share files between team members using GPG e
 
 ** Setup
 
-1. Import team member keys:
-   #+begin_src shell
-   gmake import-keys
-   #+end_src
+*** Method 1: Using the Makefile (if you have the repository)
+#+begin_src shell
+# Import team member keys
+gmake import-keys
 
-2. Verify imported keys:
-   #+begin_src shell
-   gpg --list-keys
-   #+end_src
+# Verify imported keys
+gpg --list-keys
+#+end_src
+
+*** Method 2: Simple setup with wget (no dependencies)
+#+begin_src shell
+# Create a safe temporary directory
+SAFE_TMP="${HOME}/.tmp/gpg_keys"
+mkdir -p "${SAFE_TMP}"
+chmod 700 "${SAFE_TMP}"
+
+# Download and import keys for collaborators
+for user in aygp-dr jwalsh; do
+  echo "Importing key for ${user}..."
+  
+  # Download key if not exists
+  if [ ! -f "${SAFE_TMP}/${user}.gpg" ]; then
+    wget -q "https://github.com/${user}.gpg" -O "${SAFE_TMP}/${user}.gpg"
+    echo "✓ Downloaded key for ${user}"
+  else
+    echo "✓ Using cached key for ${user}"
+  fi
+  
+  # Import to GPG
+  gpg --import "${SAFE_TMP}/${user}.gpg"
+  
+  # Trust the key
+  echo -e "5\ny\n" | gpg --command-fd 0 --expert --edit-key "${user}" trust
+  
+  echo "✓ Successfully imported and trusted keys for ${user}"
+  echo
+done
+
+echo "🎉 All keys imported successfully! 🎉"
+#+end_src
+
+*** Method 3: One-line setup (quickest)
+#+begin_src shell
+# For aygp-dr
+wget -qO- https://github.com/aygp-dr.gpg | gpg --import
+
+# For jwalsh
+wget -qO- https://github.com/jwalsh.gpg | gpg --import
+
+# Trust the keys (repeat for each key)
+echo -e "5\ny\n" | gpg --command-fd 0 --expert --edit-key "j@wal.sh" trust
+echo -e "5\ny\n" | gpg --command-fd 0 --expert --edit-key "computeruse@defrecord.com" trust
+#+end_src
 
 ** Encryption
 

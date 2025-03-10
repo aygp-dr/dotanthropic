@@ -34,11 +34,15 @@ ANTHROPIC_KEY=your_key GITHUB_TOKEN=your_token gmake run-container
 To encrypt a file for collaborators:
 
 #+begin_src bash
-# Import collaborator keys
+# If you have the repository
 gmake import-keys
 
+# Using wget directly (no dependencies)
+wget -qO- https://github.com/aygp-dr.gpg | gpg --import
+wget -qO- https://github.com/jwalsh.gpg | gpg --import
+
 # Encrypt a file
-gpg --encrypt --sign --armor -r computeruse@defrecord.com -r j@wal.sh -o file.gpg file.txt
+gpg --encrypt --armor -r computeruse@defrecord.com -r j@wal.sh -o file.gpg file.txt
 #+end_src
 
 ** Documentation

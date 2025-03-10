@@ -14,6 +14,7 @@
 - SSH key setup: `gmake setup-ssh`
 - GPG key setup: `gmake setup-gpg`
 - Import collaborator keys: `gmake import-keys`
+- Simple key import (no GitHub CLI): `gmake import-keys-simple`
 - Clean up system keys: `gmake cleanup-keys`
 
 ### Make vs GMake
