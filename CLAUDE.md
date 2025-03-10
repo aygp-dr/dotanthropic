@@ -13,6 +13,7 @@
 - Run Computer Use container: `ANTHROPIC_KEY=your_key GITHUB_TOKEN=your_token gmake run-container`
 - SSH key setup: `gmake setup-ssh`
 - GPG key setup: `gmake setup-gpg`
+- Import collaborator keys: `gmake import-keys`
 
 ### Make vs GMake
 - FreeBSD users should prefer using `gmake` 
@@ -27,6 +28,7 @@
 - Use dedicated SSH keys: Run `gmake setup-ssh` to configure
 - Remote format: `git@github.com-aygp-dr:aygp-dr/REPO.git`
 - GPG key ID: `79B6CE1B71B45489` (for signed commits)
+- Collaborator keys: Run `gmake import-keys` to import public keys for encryption
 
 ### Commit Format
 - Follow conventional commits: `<type>(<scope>): <description>`
