@@ -11,6 +11,8 @@
 - Generate and commit changelog: `gmake changelog-commit`
 - Lint code: `gmake lint`
 - Run Computer Use container: `ANTHROPIC_KEY=your_key GITHUB_TOKEN=your_token gmake run-container`
+- SSH key setup: `gmake setup-ssh`
+- GPG key setup: `gmake setup-gpg`
 
 ### Make vs GMake
 - FreeBSD users should prefer using `gmake` 
@@ -24,13 +26,15 @@
 - Default identity: `Aidan Pace <computeruse@defrecord.com>`
 - Use dedicated SSH keys: Run `gmake setup-ssh` to configure
 - Remote format: `git@github.com-aygp-dr:aygp-dr/REPO.git`
+- GPG key ID: `79B6CE1B71B45489` (for signed commits)
 
 ### Commit Format
 - Follow conventional commits: `<type>(<scope>): <description>`
 - Types: feat, fix, docs, style, refactor, test, chore
 - Example: `feat(setup): add support for poetry initialization`
-- Always use `--no-gpg-sign` when making commits
-- Commit command example: `git commit --no-gpg-sign -m "feat(docker): add container run script"`
+- Commits are signed with GPG by default
+- To disable GPG signing for a commit: `git commit --no-gpg-sign -m "message"`
+- Commit command example: `git commit -m "feat(docker): add container run script"`
 
 ### Python
 - Use Python 3.11+ with type annotations

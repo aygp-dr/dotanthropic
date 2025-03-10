@@ -1,4 +1,4 @@
-.PHONY: help bootstrap setup nix-shell nix-build nix-clean check-env install-nix github-setup git-config validate-token clean lint configure make-detect run-container setup-ssh
+.PHONY: help bootstrap setup nix-shell nix-build nix-clean check-env install-nix github-setup git-config validate-token clean lint configure make-detect run-container setup-ssh setup-gpg
 
 # Use single variable for make command
 MAKE_CMD := gmake
@@ -96,7 +96,11 @@ setup-ssh: ## Configure SSH keys for GitHub
 	@echo "Setting up SSH keys for GitHub..."
 	@bash scripts/setup_ssh.sh
 
-github-setup: validate-token setup-ssh ## Setup GitHub repository and SSH key
+setup-gpg: ## Configure GPG key for commit signing
+	@echo "Setting up GPG key for commit signing..."
+	@bash scripts/setup_gpg.sh
+
+github-setup: validate-token setup-ssh setup-gpg ## Setup GitHub repository with SSH and GPG keys
 	@echo "Setting up GitHub configuration..."
 	@bash scripts/setup_github.sh
 
