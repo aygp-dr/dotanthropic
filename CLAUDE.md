@@ -1,3 +1,7 @@
+# DEPRECATED - See CLAUDE.org instead
+
+This CLAUDE.md file is deprecated. Please use CLAUDE.org for all project preferences and documentation.
+
 # Commands and Guidelines for dotanthropic
 
 ## Build/Development Commands
