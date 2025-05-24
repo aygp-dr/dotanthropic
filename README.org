@@ -53,4 +53,4 @@ gpg --encrypt --armor -r computeruse@defrecord.com -r j@wal.sh -o file.gpg file.
 
 ** Documentation
 
-See [[./CLAUDE.md][CLAUDE.md]] for detailed instructions and development guidelines.
+See [[./CLAUDE.org][CLAUDE.org]] for detailed instructions and development guidelines.
